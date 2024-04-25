@@ -6,6 +6,8 @@ function Navbar({ setToken }) {
   const handleLogout = () => {
     localStorage.removeItem('token');
     setToken("");
+    localStorage.removeItem('user');
+
     // No need to navigate with <a>, use Link for internal routing
   };
 

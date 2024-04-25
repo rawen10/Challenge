@@ -34,7 +34,7 @@ function Main() {
         {user ? (
           <Route path="/" element={<App />}>
             <Route index element={<Home />} />
-            <Route path="profile" element={<Profile />} />
+            <Route path="profile" element={<Profile token={token} />} />
             <Route path="about" element={<About />} />
             <Route path="train" element={<Train />} />
             <Route path="settings" element={<Settings />} />

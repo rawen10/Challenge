@@ -1,24 +1,29 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-
-function LogIn({setToken}) { //accept  the callback as a prop 
+function LogIn({ setToken }) {
+  //accept  the callback as a prop
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/auth/login', {
+      const response = await axios.post("http://localhost:3000/auth/login", {
         email,
         password,
       });
       // Store the JWT token (in local storage or cookies)
-      localStorage.setItem('token', JSON.stringify(response?.data));
-      setToken(JSON.parse(localStorage.getItem("token")))
-       // Call the callback on successful login
+      localStorage.setItem("token", JSON.stringify(response?.data));
+      setToken(JSON.parse(localStorage.getItem("token")));
+      // Call the callback on successful login
     } catch (error) {
-      console.log(error)
+      // Check if there's a response with an error message
+      const errorMessage =
+        error.response?.data?.message || "Login failed. Please try again.";
+      // Show a toast notification with the specific error message
+      toast.error(errorMessage);
     }
   };
 
@@ -29,7 +34,7 @@ function LogIn({setToken}) { //accept  the callback as a prop
         height: "100vh",
         justifyContent: "center",
         display: "flex",
-        background:"black"
+        background: "black",
       }}
       className="App"
     >
@@ -54,11 +59,19 @@ function LogIn({setToken}) { //accept  the callback as a prop
           </h2>
 
           <div className="inputBx">
-            <input type="email" placeholder="email" onChange={(e) => setEmail(e.target.value)} />
+            <input
+              type="email"
+              placeholder="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
 
           <div className="inputBx">
-            <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+            <input
+              type="password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
 
           <div className="inputBx">
@@ -71,6 +84,17 @@ function LogIn({setToken}) { //accept  the callback as a prop
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }
