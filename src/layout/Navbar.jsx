@@ -1,38 +1,61 @@
-import React from 'react'
-import logo from '../assets/title.png'
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import logo from '../assets/title.png';
+import { Link } from 'react-router-dom'; // Import Link instead of using <a>
 
-function Navbar() {
-  const navigate = useNavigate(); // Use React Router's useNavigate hook to navigate to different routes
+function Navbar({ setToken }) {
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setToken("");
+    // No need to navigate with <a>, use Link for internal routing
+  };
+
   return (
- <header id="header" class="fixed-top ">
-    <div class="container d-flex align-items-center">
-      <a href="index.html" class="logo me-auto"><img src={logo} alt="" class="img-fluid"/></a>
+    <header id="header" class="fixed-top">
+      <div class="container d-flex align-items-center">
+        <Link to="/" class="logo me-auto">
+          <img src={logo} alt="" class="img-fluid" />
+        </Link> {/* Change <a> to Link for client-side routing */}
 
-
-      <nav id="navbar" class="navbar justify">
-        <ul>
-          <li><a class="nav-link scrollto active" href="/">Home</a></li>
-          <li><a class="nav-link scrollto" href="about">About</a></li>
-          <li><a class="nav-link scrollto" href="train">Train</a></li>
-          {/* <button className="nav-link" onClick={() => navigate("/train")}>
-            Train
-          </button> */}
-          <li><a class="nav-link scrollto " href="settings">Settings</a></li>
-          <li class="dropdown"><a href="/"><span>Profile</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li><a href="profile">Profile</a></li>
-              <li><a href="editProfile">Edit Profile</a></li>
-              <li><a href="/">LogOut</a></li>
-            </ul>
-          </li>
-          <li><a class="getstarted scrollto" href="#about">Get Started</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav>
-
-    </div>
-  </header>  )
+        <nav id="navbar" class="navbar justify">
+          <ul>
+            <li>
+              <Link class="nav-link scrollto active" to="/">Home</Link> {/* Update href to to */}
+            </li>
+            <li>
+              <Link class="nav-link scrollto" to="/about">About</Link> {/* Update href to to */}
+            </li>
+            <li>
+              <Link class="nav-link scrollto" to="/train">Train</Link> {/* Update href to to */}
+            </li>
+            <li>
+              <Link class="nav-link scrollto" to="/settings">Settings</Link> {/* Update href to to */}
+            </li>
+            <li class="dropdown">
+              <Link to="/">
+                <span>Profile</span> 
+                <i class="bi bi-chevron-down"></i>
+              </Link>
+              <ul>
+                <li>
+                  <Link to="/profile">Profile</Link> {/* Use Link instead of <a> */}
+                </li>
+                <li>
+                  <Link to="/editProfile">Edit Profile</Link> {/* Use Link instead of <a> */}
+                </li>
+                <li>
+                  <Link to="/" onClick={handleLogout}>LogOut</Link> {/* Use Link instead of <a> */}
+                </li>
+              </ul>
+            </li>
+            <li>
+              <Link class="getstarted scrollto" to="#about">Get Started</Link> {/* Use Link instead of <a> */}
+            </li>
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+      </div>
+    </header>
+  );
 }
 
-export default Navbar
+export default Navbar;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from 'axios';
 
 
-function LogIn({ onLogin }) { //accept  the callback as a prop 
+function LogIn({setToken}) { //accept  the callback as a prop 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,10 +14,11 @@ function LogIn({ onLogin }) { //accept  the callback as a prop
         password,
       });
       // Store the JWT token (in local storage or cookies)
-      localStorage.setItem('token', JSON.stringify(response.data));
+      localStorage.setItem('token', JSON.stringify(response?.data));
+      setToken(JSON.parse(localStorage.getItem("token")))
        // Call the callback on successful login
     } catch (error) {
-      console.error('Login failed:', error.response.data.message);
+      console.log(error)
     }
   };
 

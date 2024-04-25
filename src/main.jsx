@@ -11,21 +11,22 @@ import Settings from "./Component/Settings";
 import Edit from "./Component/Edit";
 
 function Main() {
-  const [user, setUser] = useState(''); // état initial: déconnecté
- const token = JSON.parse(localStorage.getItem("token"))
- console.log(token ,"this is the token")
-  const handleLogin = () => {
-    setUser(true); // Simulate login by setting user to true
-  };
+  const [user, setUser] = useState("");
+  const [token,setToken] = useState(localStorage.getItem("token"));
+
+  console.log(token, "this is the token");
+  
+  // const handleLogin = () => {
+  //   setUser(true); // Simulate login by setting user to true
+  // };
 
   useEffect(() => {
-    if(token){
-      setUser(true)
-    }
-    else {
+    if (token) {
+      setUser(true);
+    } else {
       setUser(false); // Simulate login by
     }
-  },[token])
+  }, [token]);
 
   return (
     <BrowserRouter>
@@ -39,15 +40,12 @@ function Main() {
             <Route path="settings" element={<Settings />} />
             <Route path="editProfile" element={<Edit />} />
           </Route>
-        ) : 
-         
+        ) : (
           <>
-            <Route path="/" element={<LogIn onLogin={handleLogin}/>} />
+            <Route path="/" element={<LogIn  setToken={setToken}/>} />
             <Route path="signUp" element={<SignUp />} />
           </>
-        }
-         
-       
+        )}
       </Routes>
     </BrowserRouter>
   );
