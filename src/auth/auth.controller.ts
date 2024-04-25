@@ -33,6 +33,10 @@ export class AuthController {
   findOne(@Param('id') id: string) {
     return this.authService.findOne(+id);
   }
+  @Get('/getme/:token')
+  findMe(@Param('token') token: string) {
+    return this.authService.findMe(token);
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
