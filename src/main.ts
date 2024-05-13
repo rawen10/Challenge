@@ -19,14 +19,14 @@ async function bootstrap() {
     .setDescription('The Median API description')
     .setVersion('0.1')
     .addBearerAuth()
-    // .addApiKey(
-    //   {
-    //     type: 'apiKey',
-    //     in: 'header',
-    //     name: 'Authorization',
-    //   },
-    //   'apiKey',
-    // )
+    .addApiKey(
+      {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization',
+      },
+      'apiKey',
+    )
     .build();
     
 

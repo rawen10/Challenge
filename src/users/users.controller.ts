@@ -4,6 +4,8 @@ import { CreateUsersDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { ApiBearerAuth, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { RolesGuard } from './roles.guard';
+import { Roles } from './roles.decorator';
 
 @Controller('users')
 @ApiTags('users') //bich ta3tih el essm fel swagegr 
@@ -15,16 +17,18 @@ export class UsersController {
     return this.usersService.create(createUsersDto);
   }
 
-  @Get("/allUsers")
-  // @ApiSecurity('apiKey') //logo cadna
-  // @UseGuards(JwtAuthGuard) //d'après ton role t'as accés ou pas
-  @ApiBearerAuth() //logo cadna to indicate that authentication is required:
+  @Roles('ADMIN') // Only ADMIN can access this endpoint
+  @Get("")
+  @ApiSecurity('apiKey') //logo cadna
+  @UseGuards(JwtAuthGuard,RolesGuard) //d'après ton role t'as accés ou pas
+  // @ApiBearerAuth() //logo cadna to indicate that authentication is required:
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiSecurity('apiKey')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }

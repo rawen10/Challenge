@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -33,6 +38,16 @@ export class AuthService {
     const { password, ...rest } = user;
     const token = await this.jwtService.signAsync(rest);
     return token;
+  }
+  validateToken(token: string) {
+    try {
+      // Décode et valide le jeton
+      const decoded = this.jwtService.verify(token);
+      return { status: 'valid', user: decoded };
+    } catch (error) {
+      // Le jeton n'est pas valide
+      throw new UnauthorizedException('Token invalide');
+    }
   }
 
   findAll() {

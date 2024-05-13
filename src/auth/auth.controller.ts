@@ -6,14 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/users/jwt-auth.guard';
 
-@ApiTags('AUTH')  //model name
-@Controller('auth') // wesst el crud 
+@ApiTags('AUTH') //model name
+@Controller('auth') // wesst el crud
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -22,21 +25,27 @@ export class AuthController {
     return this.authService.login(createAuthDto);
   }
 
-  
-
   @Get()
   findAll() {
     return this.authService.findAll();
   }
-
+  // @Get('validate-token') // Valider le jeton
+  // validateToken(@Request() req) {
+  //   const token = req.headers['authorization'].replace('Bearer ', '');
+  //   const isValid = this.authService.validateToken(token); // Ajoutez une méthode pour valider
+  //   return { status: isValid ? 'valid' : 'invalid' }; // Retourne le statut approprié
+  // }
+  @UseGuards(JwtAuthGuard)
+  @Get('/getme')
+  findMe(@Request() req: any) {    
+    return req.user;
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.authService.findOne(+id);
   }
-  @Get('/getme/:token')
-  findMe(@Param('token') token: string) {
-    return this.authService.findMe(token);
-  }
+
+  
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
